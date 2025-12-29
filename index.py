@@ -2,6 +2,7 @@ import time
 import sqlite3
 import datetime
 import re
+import schedule
 
 from playwright.sync_api import sync_playwright, Page
 
@@ -216,9 +217,16 @@ def run_scraper():
     print(f"\nResumen total: {len(todos_los_productos)} productos extraídos.")
 
 def main():
-    print("Iniciando ejecución del scraper desde GitHub Actions...")
-    run_scraper()
-    print("Ejecución finalizada.")
+    print("Iniciando planificador para Railway...")
+    # Programa la ejecución del scraper todos los días a las 23:00 (Hora del servidor, suele ser UTC)
+    # Si Railway está en UTC, 23:00 UTC = 20:00 Argentina. Ajusta según necesites.
+    schedule.every().day.at("23:00").do(run_scraper)
+    
+    print("Bot activo y esperando. Próxima ejecución a las 23:00.")
+
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
 
 if __name__ == "__main__":
     main()

@@ -22,8 +22,8 @@ def test_single_page_extraction():
     # url_test = "https://listado.mercadolibre.com.ar/irrigador-bucal"
 
     with sync_playwright() as p:
-        # headless=False para ver el navegador, slow_mo para ver qué hace
-        browser = p.chromium.launch(headless=False, slow_mo=50)
+        # headless=True para que funcione en GitHub Actions
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         print(f"Navegando a la URL de prueba: {url_test}")
@@ -120,8 +120,6 @@ def test_single_page_extraction():
             print("-" * 30)
 
         print("\nPrueba de extracción finalizada.")
-        print("La ventana del navegador se cerrará en 15 segundos...")
-        page.wait_for_timeout(15000)
         browser.close()
 
 if __name__ == "__main__":
